@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using DeviceService.Entities;
 
-namespace UserService.Entities
+namespace DeviceService.Entities
 {
     [Table("dm_device")]
     public class Device

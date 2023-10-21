@@ -9,7 +9,7 @@ namespace UserService.Repositories
 
         public UserRepo(AppDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public void AddUser(ref User user)

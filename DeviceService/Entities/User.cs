@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DeviceService.Entities
 {
-    [Table("dm_user")]
+    [Table("dm_linkUserToDevice")]
     public class User
     {
         [Key]
