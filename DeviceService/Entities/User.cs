@@ -13,5 +13,7 @@ namespace DeviceService.Entities
         [Required]
         [Column("user_id")]
         public int UserId { get; set; }
+
+        public virtual ICollection<Device> Devices { get; set; } = new List<Device>();
     }
 }

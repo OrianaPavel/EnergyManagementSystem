@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using DeviceService.Entities;
 
 namespace DeviceService.Entities
 {

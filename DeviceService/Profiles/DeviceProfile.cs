@@ -4,7 +4,6 @@ using DeviceService.Entities;
 using HashidsNet;
 using System.Linq;
 using UserDevice.Dtos;
-using UserService.Entities;
 
 namespace DeviceService.MappingProfiles
 {

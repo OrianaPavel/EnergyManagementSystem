@@ -17,7 +17,7 @@ namespace DeviceService.Repositories
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public void CreateDevice(Device device)
+        public void CreateDevice( ref Device device)
         {
             if (device == null)
             {
@@ -35,6 +35,10 @@ namespace DeviceService.Repositories
                 .ToList();
         }
 
+        public IEnumerable<Device> GetAllDevices()
+        {
+            return _context.Devices.ToList();
+        }
         public Device? GetDeviceById(int id)
         {
             return _context.Devices

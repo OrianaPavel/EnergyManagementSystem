@@ -2,7 +2,7 @@ namespace DeviceService.Dtos
 {
     public class DeviceReadDto
     {
-        public string Id { get; set; } = String.Empty;
+        public int Id { get; set; } 
         public string Description { get; set; } = String.Empty;
         public string Address { get; set; } = String.Empty;
         public int MaximumHourlyEnergyConsumption { get; set; }

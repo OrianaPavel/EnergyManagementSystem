@@ -5,10 +5,10 @@ namespace DeviceService.Repositories
 {
     public interface IUserRepo
     {
-        void CreateUser(User user);
+        User? CreateUser(User user);
         User? GetUserById(int id);
         //void UpdateUser(User user);
-        void DeleteUser(User user);
+        void DeleteUser(int userId);
         bool SaveChanges();
     }
 }
