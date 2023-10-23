@@ -1,6 +1,3 @@
-<<<<<<< Updated upstream
-var builder = WebApplication.CreateBuilder(args);
-=======
 using System.Text;
 using DeviceService.Profiles;
 using DeviceService.Repositories;
@@ -19,15 +16,28 @@ Log.Logger = new LoggerConfiguration().
     .WriteTo.File("Log/log.txt",
     rollingInterval: RollingInterval.Day)
     .CreateLogger();
->>>>>>> Stashed changes
-
+builder.Host.UseSerilog();
 // Add services to the container.
+/* HASHIDS*/
+builder.Services.AddSingleton<IHashids>(_ => new Hashids(builder.Configuration.GetSection("Hashids:Salt").Value!, 11));
+/* =================================================== */
+// Add services to the container.
+/* DataBase Context Dependency Injection */
+var dbHost = "localhost";
+var dbName = "dm_device";
+var dbUser = "root";
+var dbPassword = "root";
+var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID={dbUser};Password={dbPassword}";
+builder.Services.AddDbContext<AppDbContext>(opt => opt.UseMySQL(connectionString));
+/* =================================================== */
+builder.Services.AddScoped<DeviceService.Service.DeviceService>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IDeviceRepo, DeviceRepo>();
+// Add services to the container.
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-<<<<<<< Updated upstream
-builder.Services.AddEndpointsApiExplorer();
-=======
 //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddAutoMapper((serviceProvider, automapper) =>
@@ -64,7 +74,6 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
                 builder.Configuration.GetSection("Jwt:Token").Value!))
     };
 });
->>>>>>> Stashed changes
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

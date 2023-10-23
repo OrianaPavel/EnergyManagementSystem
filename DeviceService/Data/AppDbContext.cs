@@ -31,6 +31,14 @@ namespace UserService.Data
             {
                 _logger.LogError("--> "+e.Message);
             }
+
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Devices)
+                .WithOne(d => d.User)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

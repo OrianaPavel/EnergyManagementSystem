@@ -16,24 +16,11 @@ namespace DeviceService.Repositories
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-<<<<<<< Updated upstream
-        public void CreateUser(User user)
-        {
-            if (user == null)
-            {
-                
-                _logger.LogWarning("In CreateUser method cannot insert new record in DB because user object is null");
-                return;
-            }
-
-            _context.Users.Add(user);
-=======
         public User CreateUser(User user)
         {
             _context.Users.Add(user);
             SaveChanges();
             return user;
->>>>>>> Stashed changes
         }
 
         public User? GetUserById(int id)
@@ -42,8 +29,9 @@ namespace DeviceService.Repositories
         }
 
 
-        public void DeleteUser(User user)
+        public void DeleteUser(int userId)
         {
+            var user = _context.Users.Include(u => u.Devices).SingleOrDefault(u => u.UserId == userId);
             if (user == null)
             {
                 _logger.LogWarning("In DeleteUser method cannot insert new record in DB because user object is null");
@@ -51,10 +39,7 @@ namespace DeviceService.Repositories
             }
 
             _context.Users.Remove(user);
-<<<<<<< Updated upstream
-=======
             SaveChanges();
->>>>>>> Stashed changes
         }
 
         public bool SaveChanges()

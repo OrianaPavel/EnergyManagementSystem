@@ -6,7 +6,8 @@ namespace DeviceService.Repositories
     public interface IDeviceRepo
     {
         
-        void CreateDevice(Device device);
+        void CreateDevice(ref Device device);
+        IEnumerable<Device> GetAllDevices();
         IEnumerable<Device> GetDevicesByUserId(int userId);
         Device? GetDeviceById(int id);
         void UpdateDevice(Device device);
