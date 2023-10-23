@@ -14,11 +14,14 @@ namespace UserService.Controllers
         private readonly Service.UserService _userService;
         private readonly ILogger<UserController> _logger;
         private readonly IHashids _hashids;
-        public UserController(Service.UserService userService, ILogger<UserController> logger, IHashids hashids)
+        private readonly HelperCallDeviceService _helperService;
+
+        public UserController(Service.UserService userService, ILogger<UserController> logger, IHashids hashids,HelperCallDeviceService helperService)
         {
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _hashids = hashids ?? throw new ArgumentNullException(nameof(hashids));
+            _helperService = helperService ?? throw new ArgumentNullException(nameof(helperService));
         }
         
         // GET: api/Users
@@ -68,6 +71,13 @@ namespace UserService.Controllers
             
             userCreateDto.Password = BCrypt.Net.BCrypt.HashPassword(userCreateDto.Password);
             var user = _userService.CreateUser(userCreateDto);
+
+            var token = Request.Headers["Authorization"].ToString().Replace("bearer ", "");
+
+            _logger.LogInformation("TOKEN IS ->>>>>>> " + token);
+
+            _helperService.CreateUserInDevice(_hashids.Encode(user.Id), token);
+
             return CreatedAtAction(nameof(GetUserById), new { Id = _hashids.Encode(user.Id) }, user);
         }
 
@@ -113,6 +123,9 @@ namespace UserService.Controllers
             }
 
             _userService.DeleteUser(rawId);
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            _helperService.DeleteUser(id, token);
+
             return NoContent();
         }
 

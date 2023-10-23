@@ -8,6 +8,7 @@ using Swashbuckle.AspNetCore.Filters;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HashidsNet;
+using UserService.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 Log.Logger = new LoggerConfiguration().
     MinimumLevel.Information()
     .WriteTo.File("Log/log.txt",
-    rollingInterval: RollingInterval.Hour)
+    rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 builder.Host.UseSerilog();
@@ -49,6 +50,13 @@ builder.Services.AddSwaggerGen(options =>{
 
     options.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
+
+builder.Services.AddHttpClient<HelperCallDeviceService>("DeviceUserClient", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration.GetSection("DeviceServiceApi:BaseAddress").Value!);
+});
+
 
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {

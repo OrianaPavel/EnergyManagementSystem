@@ -6,13 +6,16 @@ using System.Linq;
 using UserDevice.Dtos;
 using UserService.Entities;
 
-namespace DeviceService.MappingProfiles
+namespace DeviceService.Profiles
 {
     public class DeviceProfile : Profile
     {
-        private readonly Hashids _hashids;
-
-        public DeviceProfile(Hashids hashids)
+        private readonly IHashids? _hashids;
+        public DeviceProfile()
+        {
+            _hashids = null;
+        }
+        public DeviceProfile(IHashids hashids)
         {
             _hashids = hashids;
             //Source -> Target

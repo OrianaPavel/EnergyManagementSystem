@@ -1,4 +1,5 @@
 using AutoMapper;
+using HashidsNet;
 using UserService.Dtos;
 using UserService.Entities;
 using UserService.Repositories;
@@ -20,11 +21,11 @@ namespace UserService.Service
 
         public UserReadDto CreateUser(UserCreateDto userCreateDto)
         {
-
+            
             var user = _mapper.Map<User>(userCreateDto);
             _userRepo.AddUser(ref user);
-            
-            return _mapper.Map<UserReadDto>(user);
+            var userResponse =  _mapper.Map<UserReadDto>(user);
+            return userResponse;
         }
 
         public UserReadDto? GetUserByUsername(string username)
@@ -79,6 +80,7 @@ namespace UserService.Service
                 return;
             }
             _userRepo.DeleteUser(user);
+
         }
     }
 }

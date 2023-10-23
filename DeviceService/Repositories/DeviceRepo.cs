@@ -26,6 +26,7 @@ namespace DeviceService.Repositories
             }
 
             _context.Devices.Add(device);
+            SaveChanges();
         }
 
         public IEnumerable<Device> GetDevicesByUserId(int userId)
@@ -45,7 +46,7 @@ namespace DeviceService.Repositories
         public void UpdateDevice(Device device)
         {
             _context.Devices.Update(device);
-            _context.SaveChanges();
+            SaveChanges();
         }
 
         public void DeleteDevice(Device device)
@@ -57,11 +58,12 @@ namespace DeviceService.Repositories
             }
 
             _context.Devices.Remove(device);
+            SaveChanges();
         }
 
         public bool SaveChanges()
         {
-            return (_context.SaveChanges() >= 0);
+            return _context.SaveChanges() >= 0;
         }
     }
 }

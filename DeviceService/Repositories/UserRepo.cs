@@ -16,6 +16,7 @@ namespace DeviceService.Repositories
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+<<<<<<< Updated upstream
         public void CreateUser(User user)
         {
             if (user == null)
@@ -26,6 +27,13 @@ namespace DeviceService.Repositories
             }
 
             _context.Users.Add(user);
+=======
+        public User CreateUser(User user)
+        {
+            _context.Users.Add(user);
+            SaveChanges();
+            return user;
+>>>>>>> Stashed changes
         }
 
         public User? GetUserById(int id)
@@ -43,6 +51,10 @@ namespace DeviceService.Repositories
             }
 
             _context.Users.Remove(user);
+<<<<<<< Updated upstream
+=======
+            SaveChanges();
+>>>>>>> Stashed changes
         }
 
         public bool SaveChanges()

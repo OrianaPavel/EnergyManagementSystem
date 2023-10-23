@@ -16,13 +16,16 @@ namespace UserService.Controllers
         private readonly Service.UserService _userService;
         private readonly ILogger<UserController> _logger;
         private readonly IHashids _hashids;
+        private readonly HelperCallDeviceService _helperService;
 
-        public AuthController(Service.UserService userService, ILogger<UserController> logger, IConfiguration configuration, IHashids hashids)
+        public AuthController(Service.UserService userService, ILogger<UserController> logger, IConfiguration configuration, IHashids hashids,HelperCallDeviceService helperService)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _hashids = hashids ?? throw new ArgumentNullException(nameof(hashids));
+            _helperService = helperService ?? throw new ArgumentNullException(nameof(helperService));
+
         }
 
         [HttpPost("register")]
@@ -35,6 +38,10 @@ namespace UserService.Controllers
             userCreateDto.Password = BCrypt.Net.BCrypt.HashPassword(userCreateDto.Password);
             userCreateDto.UserRole = 0;
             var user = _userService.CreateUser(userCreateDto);
+            user.Hashid = _hashids.Encode(user.Id);
+            user.Id = 0;
+
+            _helperService.CreateUserInDevice(user.Hashid, CreateToken(user));
 
             return Ok(user);
         }
