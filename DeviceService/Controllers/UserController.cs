@@ -10,6 +10,7 @@ namespace DeviceService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    //[Authorize]
     public class UserController : ControllerBase
     {
         private readonly IUserRepo _userRepo;
@@ -23,19 +24,20 @@ namespace DeviceService.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        // Post: api/User
-        [HttpPost("{userId}")]
-        //[ValidateIdClaim]
-        public ActionResult<User> CreateUser([FromRoute] string userId)
+        // Post: api/User/Id
+        [HttpPost("{id}")]
+        [Authorize]
+        [ValidateIdClaim]
+        public ActionResult<User> CreateUser(string id)
         {
-            int rawId = getRawId(userId);
-            _logger.LogInformation($"DeviceServe createUser userId received = {userId} and rawId = {rawId} <-------");
+            int rawId = getRawId(id);
+            _logger.LogInformation($"DeviceServe createUser userId received = {id} and rawId = {rawId} <-------");
             if(rawId == -1)
             {
                 return NotFound();
             }
 
-            User createdUser = _userRepo.CreateUser(new User { UserId = rawId });
+            User createdUser = _userRepo.CreateUser(new User { Id = rawId });
             if(createdUser == null){
                 return BadRequest();
             }
@@ -43,7 +45,7 @@ namespace DeviceService.Controllers
         }
 
         // DELETE: api/User/{userId}
-        [HttpDelete("{userId}")]
+        [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public ActionResult DeleteUser(string userId)
         {

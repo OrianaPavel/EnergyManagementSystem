@@ -1,7 +1,7 @@
 using System.Linq;
 using DeviceService.Entities;
 using Microsoft.EntityFrameworkCore;
-using UserService.Data;
+using DeviceService.Data;
 
 namespace DeviceService.Repositories
 {
@@ -31,7 +31,7 @@ namespace DeviceService.Repositories
 
         public void DeleteUser(int userId)
         {
-            var user = _context.Users.Include(u => u.Devices).SingleOrDefault(u => u.UserId == userId);
+            var user = _context.Users.Include(u => u.Devices).SingleOrDefault(u => u.Id == userId);
             if (user == null)
             {
                 _logger.LogWarning("In DeleteUser method cannot insert new record in DB because user object is null");

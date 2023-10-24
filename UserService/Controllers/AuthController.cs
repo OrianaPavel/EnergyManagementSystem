@@ -39,10 +39,10 @@ namespace UserService.Controllers
             userCreateDto.UserRole = 0;
             var user = _userService.CreateUser(userCreateDto);
             user.Hashid = _hashids.Encode(user.Id);
-            user.Id = 0;
-
+            
+            _logger.LogInformation("THE user.Hashid is == " + user.Hashid + "The user to generate the token is" + user.ToString());
             _helperService.CreateUserInDevice(user.Hashid, CreateToken(user));
-
+            user.Id = 0;
             return Ok(user);
         }
 

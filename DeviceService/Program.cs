@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.Filters;
-using UserService.Data;
+using DeviceService.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 /* LOGGER SERILOG*/

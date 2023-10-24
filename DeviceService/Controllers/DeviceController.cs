@@ -38,11 +38,11 @@ namespace DeviceService.Controllers
             return CreatedAtAction(nameof(GetDeviceById), new { id = deviceReadDto.Id }, deviceReadDto);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}/{deviceId}")]
         [ValidateIdClaim]
-        public ActionResult<DeviceReadDto> GetDeviceById(string id)
+        public ActionResult<DeviceReadDto> GetDeviceById(string id, string deviceId)
         {
-            var rawId = getRawId(id);
+            var rawId = getRawId(deviceId);
             if(rawId == -1)
             {
                 return NotFound();
@@ -55,11 +55,11 @@ namespace DeviceService.Controllers
             return Ok(device);
         }
         
-        // GET: api/Device/User/{userId}
-        [HttpGet("User/{userId}")]
-        public ActionResult<IEnumerable<DeviceReadDto>> GetDevicesByUserId(string userId)
+        // GET: api/Device/User/{id}
+        [HttpGet("{id}")]
+        public ActionResult<IEnumerable<DeviceReadDto>> GetDevicesByUserId(string id)
         {
-            var rawId = getRawId(userId);
+            var rawId = getRawId(id);
             if(rawId == -1)
             {
                 return NotFound();
@@ -74,6 +74,7 @@ namespace DeviceService.Controllers
         // GET: api/Device
         [HttpGet]
         [Authorize(Roles = "Admin")]
+        //[ValidateAdminClaim]
         public ActionResult<IEnumerable<DeviceReadDto>> GetAllDevices()
         {
             var devices = _deviceService.GetAllDevices();
@@ -81,11 +82,11 @@ namespace DeviceService.Controllers
         }
 
         // PUT: api/Device/{id}
-        [HttpPut("{id}")]
+        [HttpPut("{id}/{deviceId}")]
         [ValidateIdClaim]
-        public ActionResult UpdateDevice(string id, DeviceCreateDto deviceUpdateDto)
+        public ActionResult UpdateDevice(string id,string deviceId, DeviceCreateDto deviceUpdateDto)
         {
-            var rawId = getRawId(id);
+            var rawId = getRawId(deviceId);
             if(rawId == -1)
             {
                 return NotFound();
@@ -95,11 +96,11 @@ namespace DeviceService.Controllers
         }
 
         // DELETE: api/Device/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}/{deviceId}")]
         [ValidateIdClaim]
-        public ActionResult DeleteDevice(string id)
+        public ActionResult DeleteDevice(string id,string deviceId)
         {
-            var rawId = getRawId(id);
+            var rawId = getRawId(deviceId);
             if(rawId == -1)
             {
                 return NotFound();

@@ -27,7 +27,7 @@ namespace DeviceService.Entities
 
         [Required]
         [ForeignKey("User")]
-        [Column("user_id")]
+        //[Column("user_id")]
         public int UserId { get; set; }
         public virtual User? User { get; set; }
     }

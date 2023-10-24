@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
 
-namespace UserService.Data
+namespace DeviceService.Data
 {
     public class AppDbContext : DbContext
     {

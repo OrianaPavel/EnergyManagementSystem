@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DeviceService.Entities;
 using Microsoft.EntityFrameworkCore;
-using UserService.Data;
+using DeviceService.Data;
 
 namespace DeviceService.Repositories
 {
