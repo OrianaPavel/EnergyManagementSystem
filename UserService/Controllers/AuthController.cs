@@ -8,7 +8,7 @@ using UserService.Dtos;
 
 namespace UserService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -49,6 +49,7 @@ namespace UserService.Controllers
         [HttpPost("login")]
         public ActionResult<UserReadDto> Login(UserReadDto userReadDto)
         {
+            _logger.LogInformation("Username received = " + userReadDto.Username + " Password received = " + userReadDto.Password);
             var user = _userService.GetUserByUsername(userReadDto.Username);
             //Console.WriteLine(user.Password);
             if(user == null)
@@ -56,6 +57,7 @@ namespace UserService.Controllers
                 return BadRequest("User data is null.");
             }
             _logger.LogDebug("HashPass --> " + user.Password);
+            
             if (user.Username != userReadDto.Username)
             {
                 return BadRequest("User not found.");
@@ -68,7 +70,12 @@ namespace UserService.Controllers
 
             string token = CreateToken(user);
 
-            return Ok(token);
+            //return Ok(token);
+            return Ok(new 
+            {
+                Token = token,
+                User = user  
+            });
         }
 
         private string CreateToken(UserReadDto user)

@@ -1,4 +1,4 @@
-import {HOST} from '../../commons/hosts';
+import {HOSTUSERSERVICE} from '../../commons/hosts';
 import RestApiClient from "../../commons/api/rest-client";
 
 const endpoint = {
@@ -17,7 +17,7 @@ function getHeaders(isJson = true) {
 }
 
 function getAllUsers(callback) {
-    let request = new Request(HOST.backend_api + endpoint.user, {
+    let request = new Request(HOSTUSERSERVICE.backend_api + endpoint.user, {
         method: 'GET',
         headers: getHeaders()
     });
@@ -25,7 +25,7 @@ function getAllUsers(callback) {
 }
 
 function getUserById(id, callback){
-    let request = new Request(HOST.backend_api + endpoint.user + '/' + id, {
+    let request = new Request(HOSTUSERSERVICE.backend_api + endpoint.user + '/' + id, {
        method: 'GET',
        headers: getHeaders()
     });
@@ -33,7 +33,7 @@ function getUserById(id, callback){
 }
 
 function createUser(user, callback){
-    let request = new Request(HOST.backend_api + endpoint.user, {
+    let request = new Request(HOSTUSERSERVICE.backend_api + endpoint.user, {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify(user)
@@ -42,7 +42,7 @@ function createUser(user, callback){
 }
 
 function updateUser(id, user, callback){
-    let request = new Request(HOST.backend_api + endpoint.user + '/' + id, {
+    let request = new Request(HOSTUSERSERVICE.backend_api + endpoint.user + '/' + id, {
         method: 'PUT',
         headers: getHeaders(),
         body: JSON.stringify(user)
@@ -51,7 +51,7 @@ function updateUser(id, user, callback){
 }
 
 function deleteUser(id, callback){
-    let request = new Request(HOST.backend_api + endpoint.user + '/' + id, {
+    let request = new Request(HOSTUSERSERVICE.backend_api + endpoint.user + '/' + id, {
         method: 'DELETE',
         headers: getHeaders()
     });

@@ -6,7 +6,7 @@ using UserService.Dtos;
 
 namespace UserService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     [Authorize]
     public class UserController : ControllerBase
@@ -84,7 +84,7 @@ namespace UserService.Controllers
         // PUT: api/Users/5
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin")]
-        public ActionResult UpdateUser(string id, UserCreateDto userUpdateDto)
+        public ActionResult<UserReadDto> UpdateUser(string id, UserCreateDto userUpdateDto)
         {
             var rawId = getRawId(id);
             if(rawId == -1)
@@ -103,13 +103,15 @@ namespace UserService.Controllers
             }
             userUpdateDto.Password = BCrypt.Net.BCrypt.HashPassword(userUpdateDto.Password);
             _userService.UpdateUser(rawId, userUpdateDto);
-            return NoContent();
+
+            existingUser.Password = userUpdateDto.Password;
+            return Ok(existingUser);
         }
 
         // DELETE: api/Users/5
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        public ActionResult DeleteUser(string id)
+        public ActionResult<UserReadDto> DeleteUser(string id)
         {
             var rawId = getRawId(id);
             if(rawId == -1)
@@ -126,7 +128,7 @@ namespace UserService.Controllers
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             _helperService.DeleteUser(id, token);
 
-            return NoContent();
+            return Ok(user);
         }
 
         private int getRawId(string hashid){

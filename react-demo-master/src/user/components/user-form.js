@@ -83,7 +83,7 @@ class UserForm extends React.Component {
     };
 
     registerUser(user) {
-        return API_USERS.postUser(user, (result, status, error) => {
+        return API_USERS.createUser(user, (result, status, error) => {
             if (result !== null && (status === 200 || status === 201)) {
                 console.log("Successfully inserted person with id: " + result);
                 this.reloadHandler();

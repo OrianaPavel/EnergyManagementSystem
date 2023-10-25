@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DeviceService.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [Authorize]
     public class DeviceController : ControllerBase
     {
@@ -84,7 +84,7 @@ namespace DeviceService.Controllers
         // PUT: api/Device/{id}
         [HttpPut("{id}/{deviceId}")]
         [ValidateIdClaim]
-        public ActionResult UpdateDevice(string id,string deviceId, DeviceCreateDto deviceUpdateDto)
+        public ActionResult<DeviceReadDto> UpdateDevice(string id,string deviceId, DeviceCreateDto deviceUpdateDto)
         {
             var rawId = getRawId(deviceId);
             if(rawId == -1)
@@ -92,13 +92,14 @@ namespace DeviceService.Controllers
                 return NotFound();
             }
             _deviceService.UpdateDevice(rawId, deviceUpdateDto);
-            return NoContent();
+            var device = _deviceService.GetDeviceById(rawId);
+            return Ok(device);
         }
 
         // DELETE: api/Device/{id}
         [HttpDelete("{id}/{deviceId}")]
         [ValidateIdClaim]
-        public ActionResult DeleteDevice(string id,string deviceId)
+        public ActionResult<DeviceReadDto> DeleteDevice(string id,string deviceId)
         {
             var rawId = getRawId(deviceId);
             if(rawId == -1)
@@ -112,7 +113,7 @@ namespace DeviceService.Controllers
             }
             
             _deviceService.DeleteDevice(rawId);
-            return NoContent();
+            return Ok(device);
         }
         private int getRawId(string hashid){
             var rawId = _hashids.Decode(hashid);

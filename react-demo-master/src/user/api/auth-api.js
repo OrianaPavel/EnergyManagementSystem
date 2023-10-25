@@ -1,4 +1,4 @@
-import {HOST} from '../../commons/hosts';
+import {HOSTUSERSERVICE} from '../../commons/hosts';
 import RestApiClient from "../../commons/api/rest-client";
 
 const endpoint = {
@@ -15,37 +15,49 @@ function getHeaders(isJson = true) {
     return headers;
 }
 
-function register(user, callback){
-    let request = new Request(HOST.backend_api + endpoint.register, {
+function register(user, callback) {
+    let request = new Request(HOSTUSERSERVICE.backend_api + endpoint.register, {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify(user)
     });
+    
     console.log("URL: " + request.url);
-    RestApiClient.performRequest(request, (response) => {
-        if (response.ok && response.token && response.userId) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('userId', response.userId);
+    
+    RestApiClient.performRequest(request, (data, statusCode, error) => {
+        if (data && data.token && data.userId) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.userId);
+
+            callback(statusCode);
+        } else {
+            console.error("Error during registration", error);
+            callback(null);
         }
-        callback(response);
     });
 }
 
-function login(user, callback){
-    let request = new Request(HOST.backend_api + endpoint.login, {
+function login(user, callback) {
+    let request = new Request(HOSTUSERSERVICE.backend_api + endpoint.login, {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify(user)
     });
+    
     console.log("URL: " + request.url);
-    RestApiClient.performRequest(request, (response) => {
-        if (response.ok && response.token && response.user) {
-            localStorage.setItem('token', response.token);
-            localStorage.setItem('userId', response.user.Id);
-            localStorage.setItem('username', response.user.Username);
-            localStorage.setItem('role', response.user.UserRole);
+    
+    RestApiClient.performRequest(request, (data, statusCode, error) => {
+        if (data && data.token && data.user) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.user.hashid);
+            localStorage.setItem('username', data.user.username);
+            localStorage.setItem('role', data.user.userRole); 
+
+            callback(statusCode);
+        } else {
+            console.error("Error during login", error);
+            callback(null);
         }
-        callback(response);
     });
 }
 

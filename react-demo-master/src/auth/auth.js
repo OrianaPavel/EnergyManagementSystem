@@ -21,9 +21,9 @@ class Auth extends React.Component {
             Username: this.state.username,
             Password: this.state.password
         };
-
-        login(user, (response) => {
-            if (response.ok) {
+        console.log(user);
+        login(user, (statusCode) => {
+            if (statusCode === 200) { // Code 200 = SUCCESS
                 
                 if (parseInt(localStorage.getItem('role'), 10) === 1) { // admin
                     window.location.href = "/admin"; 
@@ -43,9 +43,10 @@ class Auth extends React.Component {
             Username: this.state.username,
             Password: this.state.password
         };
-
-        register(user, (response) => {
-            if (response.ok) {
+        
+        console.log(user);
+        register(user, (statusCode) => {
+            if (statusCode === 200) { // Code 200 = SUCCESS
                 console.log("Successfully registered. You can now login.");
             } else {
                 console.error("Failed to register");
