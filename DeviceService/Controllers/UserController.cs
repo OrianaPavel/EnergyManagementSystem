@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace DeviceService.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     //[Authorize]
     public class UserController : ControllerBase
     {

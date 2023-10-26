@@ -19,16 +19,6 @@ class DeviceForm extends React.Component {
             formIsValid: false,
 
             formControls: {
-                id: {
-                    value: '',
-                    placeholder: 'Device ID...',
-                    valid: false,
-                    touched: false,
-                    validationRules: {
-                        minLength: 3,
-                        isRequired: true
-                    }
-                },
                 description: {
                     value: '',
                     placeholder: 'Description...',
@@ -95,7 +85,7 @@ class DeviceForm extends React.Component {
     };
 
     registerDevice(device) {
-        return API_DEVICES.postDevice(device, (result, status, error) => {
+        return API_DEVICES.createDevice(this.props.userId,device, (result, status, error) => {
             if (result !== null && (status === 200 || status === 201)) {
                 console.log("Successfully inserted device with id: " + result);
                 this.reloadHandler();
@@ -110,10 +100,10 @@ class DeviceForm extends React.Component {
 
     handleSubmit() {
         let device = {
-            id: this.state.formControls.id.value,
             description: this.state.formControls.description.value,
             address: this.state.formControls.address.value,
-            maximumHourlyEnergyConsumption: this.state.formControls.maximumHourlyEnergyConsumption.value
+            maximumHourlyEnergyConsumption: parseInt(this.state.formControls.maximumHourlyEnergyConsumption.value),
+            userId: this.props.userId
         };
 
         console.log(device);
@@ -123,19 +113,7 @@ class DeviceForm extends React.Component {
     render() {
         return (
             <div>
-                <FormGroup id='id'>
-                    <Label for='idField'> Device ID: </Label>
-                    <Input name='id' id='idField' placeholder={this.state.formControls.id.placeholder}
-                           onChange={this.handleChange}
-                           defaultValue={this.state.formControls.id.value}
-                           touched={this.state.formControls.id.touched? 1 : 0}
-                           valid={this.state.formControls.id.valid}
-                           required
-                    />
-                    {this.state.formControls.id.touched && !this.state.formControls.id.valid &&
-                    <div className={"error-message"}> * Device ID must have at least 3 characters </div>}
-                </FormGroup>
-
+                
                 <FormGroup id='description'>
                     <Label for='descriptionField'> Description: </Label>
                     <Input name='description' id='descriptionField' placeholder={this.state.formControls.description.placeholder}

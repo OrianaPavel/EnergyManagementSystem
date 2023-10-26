@@ -98,9 +98,9 @@ class UserForm extends React.Component {
 
     handleSubmit() {
         let user = {
-            username: this.state.formControls.username.value,
-            password: this.state.formControls.password.value,
-            userRole: this.state.formControls.userRole.value
+            Username: this.state.formControls.username.value,
+            Password: this.state.formControls.password.value,
+            UserRole: parseInt(this.state.formControls.userRole.value)
         };
 
         console.log(user);

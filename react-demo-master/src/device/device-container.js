@@ -11,6 +11,7 @@ class DeviceContainer extends React.Component {
         super(props);
         this.toggleForm = this.toggleForm.bind(this);
         this.reload = this.reload.bind(this);
+        this.reloadAfterModify = this.reloadAfterModify.bind(this);
         this.state = {
             selected: false,
             tableData: [],
@@ -42,6 +43,8 @@ class DeviceContainer extends React.Component {
         });
     }
 
+    
+
     toggleForm() {
         this.setState({selected: !this.state.selected});
     }
@@ -54,11 +57,20 @@ class DeviceContainer extends React.Component {
         this.fetchDevices();
     }
 
+    reloadAfterModify() {
+        this.setState({
+            isLoaded: false
+        });
+        //this.toggleForm();
+        this.fetchDevices();
+    }
+
     render() {
         const currentUserRole = localStorage.getItem('role');
-        const currentUserId = localStorage.getItem('hashid');
+        const currentUserId = localStorage.getItem('userId');
         const userId = this.props.match.params.userId; 
-        if (currentUserRole !== '1' || userId !== currentUserId) {  
+        if (currentUserRole !== '1' && userId !== currentUserId) {  
+            console.log("currentUserId === " + currentUserId + " userId ==  " + userId + "EXPR VAL = " + (currentUserRole !== '1' || userId !== currentUserId));
             return <div>Access Denied. </div>
         }
         return (
@@ -76,7 +88,10 @@ class DeviceContainer extends React.Component {
                     <br/>
                     <Row>
                         <Col sm={{size: '8', offset: 1}}>
-                            {this.state.isLoaded && <DeviceTable tableData = {this.state.tableData}/>}
+                            {this.state.isLoaded && <DeviceTable tableData = {this.state.tableData}
+                                                                 userId={this.props.match.params.userId}  
+                                                                 reloadHandler={this.reloadAfterModify}                       
+                            />}
                             {this.state.errorStatus > 0 && <APIResponseErrorMessage
                                                             errorStatus={this.state.errorStatus}
                                                             error={this.state.error}
@@ -89,7 +104,9 @@ class DeviceContainer extends React.Component {
                        className={this.props.className} size="lg">
                     <ModalHeader toggle={this.toggleForm}> Add Device: </ModalHeader>
                     <ModalBody>
-                        <DeviceForm reloadHandler={this.reload}/>
+                        <DeviceForm reloadHandler={this.reload}
+                                    userId={this.props.match.params.userId} 
+                        />
                     </ModalBody>
                 </Modal>
             </div>

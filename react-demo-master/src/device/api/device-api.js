@@ -33,6 +33,7 @@ function getDeviceById(userId, deviceId, callback) {
 }
 
 function getDevicesByUserId(userId, callback) {
+    console.log(HOSTDEVICESERVICE.backend_api + endpoint.device + '/' + userId);
     let request = new Request(HOSTDEVICESERVICE.backend_api + endpoint.device + '/' + userId, {
         method: 'GET',
         headers: getHeaders()
@@ -40,8 +41,8 @@ function getDevicesByUserId(userId, callback) {
     RestApiClient.performRequest(request, callback);
 }
 
-function createDevice(device, callback) {
-    let request = new Request(HOSTDEVICESERVICE.backend_api + endpoint.device, {
+function createDevice(userId,device, callback) {
+    let request = new Request(HOSTDEVICESERVICE.backend_api + endpoint.device + '/' + userId , {
         method: 'POST',
         headers: getHeaders(),
         body: JSON.stringify(device)

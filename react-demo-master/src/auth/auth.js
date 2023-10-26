@@ -28,7 +28,8 @@ class Auth extends React.Component {
                 if (parseInt(localStorage.getItem('role'), 10) === 1) { // admin
                     window.location.href = "/admin"; 
                 } else {
-                    window.location.href = "/user"; 
+                    console.log( "/devices/" + localStorage.getItem('userId'));
+                    window.location.href = "/devices/" + localStorage.getItem('userId'); 
                 }
             } else {
                 console.error("Failed to login");

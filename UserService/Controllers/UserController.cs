@@ -62,7 +62,7 @@ namespace UserService.Controllers
         // POST: api/Users
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public ActionResult CreateUser(UserCreateDto userCreateDto)
+        public ActionResult<UserReadDto> CreateUser(UserCreateDto userCreateDto)
         {
             if (userCreateDto == null)
             {
@@ -72,13 +72,14 @@ namespace UserService.Controllers
             userCreateDto.Password = BCrypt.Net.BCrypt.HashPassword(userCreateDto.Password);
             var user = _userService.CreateUser(userCreateDto);
 
-            var token = Request.Headers["Authorization"].ToString().Replace("bearer ", "");
+            var token = Request.Headers["Authorization"].ToString().Replace("bearer ", "", StringComparison.OrdinalIgnoreCase);
 
             _logger.LogInformation("TOKEN IS ->>>>>>> " + token);
 
             _helperService.CreateUserInDevice(_hashids.Encode(user.Id), token);
 
-            return CreatedAtAction(nameof(GetUserById), new { Id = _hashids.Encode(user.Id) }, user);
+            //return CreatedAtAction(nameof(GetUserById), new { Id = _hashids.Encode(user.Id) }, user);
+            return Ok(user);
         }
 
         // PUT: api/Users/5

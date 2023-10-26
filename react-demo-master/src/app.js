@@ -7,7 +7,7 @@ import Auth from './auth/auth'
 import User from './user/user-container'
 import ErrorPage from './commons/errorhandling/error-page';
 import styles from './commons/styles/project-style.css';
-
+import DeviceContainer from './device/device-container';
 class App extends React.Component {
 
 
@@ -30,6 +30,8 @@ class App extends React.Component {
                             path='/admin'
                             render={() => <User/>}
                         />
+                        <Route 
+                            path="/devices/:userId" component={DeviceContainer} />
                         <Route
                             exact
                             path='/person'

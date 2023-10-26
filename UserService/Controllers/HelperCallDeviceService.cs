@@ -19,12 +19,13 @@ namespace UserService.Controllers
 
         public void CreateUserInDevice(string userId, String? authorizationToken)
         {
+            _logger.LogError($"Error creating user in DeviceUser API: auth token is ----> " + authorizationToken);
             if (!string.IsNullOrEmpty(authorizationToken))
             {
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", authorizationToken);
             }
          
-            var response = _httpClient.PostAsync($"api/User/{userId}", null).Result;
+            var response = _httpClient.PostAsync($"User/{userId}", null).Result;
 
             if (!response.IsSuccessStatusCode)
             {
@@ -39,7 +40,7 @@ namespace UserService.Controllers
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", authorizationToken);
             }
 
-            var response = _httpClient.DeleteAsync($"/api/user/{userId}").Result;
+            var response = _httpClient.DeleteAsync($"user/{userId}").Result;
 
             if (!response.IsSuccessStatusCode)
             {

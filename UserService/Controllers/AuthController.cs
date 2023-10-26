@@ -69,7 +69,8 @@ namespace UserService.Controllers
             }
 
             string token = CreateToken(user);
-
+            user.Hashid = _hashids.Encode(user.Id);
+            user.Id = 0;
             //return Ok(token);
             return Ok(new 
             {

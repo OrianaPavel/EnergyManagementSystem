@@ -23,8 +23,8 @@ namespace DeviceService.Controllers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        [HttpPost]
-        //TODO
+        [HttpPost("{id}")]
+        [ValidateIdClaim]
         public ActionResult<DeviceReadDto> CreateDevice(DeviceCreateDto deviceCreateDto)
         {
             if (deviceCreateDto == null)
@@ -35,7 +35,8 @@ namespace DeviceService.Controllers
             }
 
             var deviceReadDto = _deviceService.CreateDevice(deviceCreateDto);
-            return CreatedAtAction(nameof(GetDeviceById), new { id = deviceReadDto.Id }, deviceReadDto);
+            //return CreatedAtAction(nameof(GetDeviceById), new { id = deviceReadDto.Id }, deviceReadDto);
+            return Ok(deviceReadDto);
         }
 
         [HttpGet("{id}/{deviceId}")]
@@ -65,10 +66,10 @@ namespace DeviceService.Controllers
                 return NotFound();
             }
             var devices = _deviceService.GetDevicesByUserId(rawId);
-            if(devices == null || !devices.Any())
+            /*if(devices == null || !devices.Any())
             {
                 return NotFound();
-            }
+            }*/
             return Ok(devices);
         }
         // GET: api/Device
