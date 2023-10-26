@@ -17,11 +17,25 @@ class UserTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tableData: this.props.tableData
+            tableData: this.props.tableData,
+            editedUsers: {}
         };
         this.reloadHandler = this.props.reloadHandler;
         this.handleUpdate = this.handleUpdate.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    handleInputChange(column, value, userId) {
+        this.setState(prevState => ({
+            editedUsers: {
+                ...prevState.editedUsers,
+                [userId]: {
+                    ...prevState.editedUsers[userId],
+                    [column]: value
+                }
+            }
+        }));
     }
 
     handleUpdate(updatedUser) {
@@ -69,10 +83,24 @@ class UserTable extends React.Component {
             {
                 Header: 'Username',
                 accessor: 'username',
+                Cell: row => (
+                    <input
+                        type="text"
+                        defaultValue={row.original.username}
+                        onChange={e => this.handleInputChange('username', e.target.value, row.original.id)}
+                    />
+                )
             },
             {
                 Header: 'Password',
                 accessor: 'password',
+                Cell: row => (
+                    <input
+                        type="text"
+                        defaultValue={row.original.password}
+                        onChange={e => this.handleInputChange('password', e.target.value, row.original.id)}
+                    />
+                )
             },
             {
                 Header: 'Role',
@@ -91,9 +119,14 @@ class UserTable extends React.Component {
                 accessor: 'update',
                 Cell: row => {
                     const { update, delete: deleteProp, linkedDevices, ...rest } = row.original;
+                    const editedData = this.state.editedUsers[row.original.id];
+                    const editedUsers = {
+                        ...rest,
+                        ...(editedData || {})  
+                    };
                     return (    
                         <Button color="warning" size="sm" 
-                                onClick={() => this.handleUpdate(row.original)}>
+                                onClick={() => this.handleUpdate(editedUsers)}>
                             Update
                         </Button>
                     );

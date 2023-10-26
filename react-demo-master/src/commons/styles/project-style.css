@@ -59,11 +59,12 @@
     background-repeat: no-repeat;
     width: 100%;
     height: 1920px;
-    background-image: url("../images/future-medicine.jpg");
+    background-image: url("../images/energyBackground.jpg");
 }
 
 :local(.back) {
     background-color: #FAFAF6;
+    background-image: url("../images/energyBackground.jpg");
 }
 
 :local(.titleSubtitleContainer) {

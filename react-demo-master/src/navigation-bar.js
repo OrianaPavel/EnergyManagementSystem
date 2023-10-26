@@ -17,6 +17,16 @@ const textStyle = {
     textDecoration: 'none'
 };
 
+/*
+    <DropdownItem>
+        <NavLink href="/person">Persons</NavLink>
+    </DropdownItem>
+*/
+
+function handleLogOut(event) {
+    localStorage.clear();
+}
+
 const NavigationBar = () => (
     <div>
         <Navbar color="dark" light expand="md">
@@ -31,9 +41,9 @@ const NavigationBar = () => (
                        Menu
                     </DropdownToggle>
                     <DropdownMenu right >
-
+                        
                         <DropdownItem>
-                            <NavLink href="/person">Persons</NavLink>
+                            <NavLink href="/"  onClick={handleLogOut}>LogOut</NavLink>
                         </DropdownItem>
 
 
