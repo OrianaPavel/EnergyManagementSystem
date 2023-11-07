@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - demo_net
+
+  # React Frontend Service
+  react:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - demo_net
+
+networks:
+  demo_net:
+    external: true

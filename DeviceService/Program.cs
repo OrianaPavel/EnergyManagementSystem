@@ -23,11 +23,23 @@ builder.Services.AddSingleton<IHashids>(_ => new Hashids(builder.Configuration.G
 /* =================================================== */
 // Add services to the container.
 /* DataBase Context Dependency Injection */
+/*
 var dbHost = "localhost";
 var dbName = "dm_device";
 var dbUser = "root";
 var dbPassword = "root";
-var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID={dbUser};Password={dbPassword}";
+var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID={dbUser};Password={dbPassword}";*/
+
+var dbHost = builder.Configuration.GetSection("LOCALDB:dbHost").Value!;
+var dbPort = builder.Configuration.GetSection("LOCALDB:dbPort").Value!;
+//var dbName = "dm_user";
+var dbName = builder.Configuration.GetSection("LOCALDB:dbName").Value!;
+//var dbUser = "root";
+var dbUser = builder.Configuration.GetSection("LOCALDB:dbUser").Value!;
+//var dbPassword = "root";
+var dbPassword = builder.Configuration.GetSection("LOCALDB:dbPassword").Value!;
+
+var connectionString = $"Data Source={dbHost};Port={dbPort};Initial Catalog={dbName};User ID={dbUser};Password={dbPassword}";
 builder.Services.AddDbContext<AppDbContext>(opt => opt.UseMySQL(connectionString));
 /* =================================================== */
 builder.Services.AddScoped<DeviceService.Service.DeviceService>();

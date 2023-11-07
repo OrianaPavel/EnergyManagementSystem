@@ -22,6 +22,7 @@ function register(user, callback) {
         body: JSON.stringify(user)
     });
     
+    console.log("test ++ " + HOSTUSERSERVICE.backend_api);
     console.log("URL: " + request.url);
     
     RestApiClient.performRequest(request, (data, statusCode, error) => {
