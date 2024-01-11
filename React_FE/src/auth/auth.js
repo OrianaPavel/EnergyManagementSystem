@@ -1,13 +1,14 @@
 import React from 'react';
 import { FormGroup, Input, Label, Button } from 'reactstrap';
 import { register, login } from '../user/api/auth-api'; 
+import PropTypes from 'prop-types';
 
 class Auth extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             username: "",
-            password: ""
+            password: "",
         };
 
         this.handleLogin = this.handleLogin.bind(this);
@@ -23,19 +24,23 @@ class Auth extends React.Component {
         };
         console.log(user);
         login(user, (statusCode) => {
-            if (statusCode === 200) { // Code 200 = SUCCESS
-                
+            if (statusCode === 200) { // Code 200 = SUCCES
+                this.props.onLoginSuccess();
                 if (parseInt(localStorage.getItem('role'), 10) === 1) { // admin
                     window.location.href = "/admin"; 
                 } else {
                     console.log( "/devices/" + localStorage.getItem('userId'));
                     window.location.href = "/devices/" + localStorage.getItem('userId'); 
                 }
+
+                
             } else {
                 console.error("Failed to login");
             }
         });
     }
+
+  
 
     handleRegister(event) {
         event.preventDefault();
@@ -80,9 +85,14 @@ class Auth extends React.Component {
 
                 <Button onClick={this.handleLogin}>Login</Button>
                 <Button onClick={this.handleRegister}>Register</Button>
+               
             </div>
         );
     }
 }
+
+Auth.propTypes = {
+    onLoginSuccess: PropTypes.func.isRequired
+};
 
 export default Auth;

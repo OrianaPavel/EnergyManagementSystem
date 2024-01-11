@@ -312,3 +312,38 @@
     background: #DCDCDC;
     border-color: #A9A9A9
 }
+
+/* Chat */
+:local(.chat-container) {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    transition: height 0.3s ease;
+  }
+  
+:local(.chat-container.minimized) {
+    height: 40px; 
+  }
+  
+:local(.chat-container.expanded) {
+    height: 300px; 
+  }
+  
+:local(.chat-header) {
+    background-color: #f1f1f1;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+:local(.chat-body) {
+    padding: 10px;
+  }
+  
+:local(.input-section) {
+    margin-top: 10px;
+  }
+  

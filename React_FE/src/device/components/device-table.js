@@ -1,5 +1,5 @@
 import React from "react";
-//import { Link} from "react-router-dom"; 
+import { Link} from "react-router-dom"; 
 import Table from "../../commons/tables/table";
 import * as API_DEVICES  from "../api/device-api"; 
 import { Button } from 'reactstrap';
@@ -118,6 +118,14 @@ class DeviceTable extends React.Component {
                     />
                 )
             },
+            {
+                Header: 'Monitor Consumption',
+                accessor: 'monitoringData', 
+                Cell:  row => (
+                    <Link to={`/monitoring-consumption/${row.original.id}`}>View Consumption</Link>
+                )
+            },
+            
             {
                 Header: 'Update',
                 accessor: 'update',

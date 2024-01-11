@@ -1,5 +1,5 @@
 import React from 'react';
-import validate from "./validators/device-validators";  // Adjust to your device validator's path
+import validate from "./validators/device-validators"; 
 import Button from "react-bootstrap/Button";
 import * as API_DEVICES from "../api/device-api";  
 import APIResponseErrorMessage from "../../commons/errorhandling/api-response-error-message";

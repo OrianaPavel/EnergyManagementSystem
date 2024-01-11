@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "CxyUFTS1YaIdq5Anu51rJnMdbCSvK5+qUT9plkxqrtiNliLgwX75HM0yPvgAaRHrLK7XHEe9BTkBUpDkX/2ZNQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Pavel\\Documents\\GitHub\\EnergyManagementSystem\\Simulator\\Simulator.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Pavel\\.nuget\\packages\\rabbitmq.client\\6.7.0\\rabbitmq.client.6.7.0.nupkg.sha512",
+    "C:\\Users\\Pavel\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
+    "C:\\Users\\Pavel\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

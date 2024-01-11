@@ -9,6 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HashidsNet;
 using UserService.Controllers;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,7 +56,8 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddSwaggerGen(options =>{
+builder.Services.AddSwaggerGen(options =>
+{
     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -72,7 +76,10 @@ builder.Services.AddHttpClient<HelperCallDeviceService>("DeviceUserClient", clie
 });
 
 
-builder.Services.AddAuthentication().AddJwtBearer(options =>
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;}).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -82,10 +89,33 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 //builder.Configuration.GetSection("Jwt:Token").Value!))
                 builder.Configuration["Jwt:Token"] ?? "AcrViINqhjkdEM4zOO8f04KdUBEOAzjJ61VfPajoFdDz3WvEctJg"))
-                
+
     };
+    options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+
+                var path = context.HttpContext.Request.Path;
+
+                Log.Information($"Received access token: {accessToken}, Path: {path}");
+                if (string.IsNullOrEmpty(accessToken) &&
+                    (path.StartsWithSegments("/chatHub/")))
+                {
+                    context.Token = accessToken;
+                    context.HttpContext.Request.Headers.Add("Authorization", "Bearer " + accessToken);
+                }
+                return Task.CompletedTask;
+            }
+        };
 });
+builder.Services.AddSignalR(opts =>
+            {
+                opts.EnableDetailedErrors = true;
+            });
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -95,15 +125,20 @@ if (app.Environment.IsDevelopment())
 }
 
 // Setup CORS
-app.UseCors(policy => 
+app.UseCors(policy =>
     policy.AllowAnyOrigin()
           .AllowAnyMethod()
-          .AllowAnyHeader());
+          .AllowAnyHeader()
+          .SetIsOriginAllowed((host) => true));
 
-app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
+
+app.UseWebSockets();
+
+app.MapHub<ChatHub>("chatHub");
+app.UseHttpsRedirection();
 app.MapControllers();
 
 app.Run();

@@ -1,10 +1,9 @@
 import React from 'react';
 import APIResponseErrorMessage from "../commons/errorhandling/api-response-error-message";
 import { Button, Card, CardHeader, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
-import DeviceForm from "./components/device-form";  // Assuming you have created this
-import * as API_DEVICES from "./api/device-api";   // Make sure you have this file and method
-import DeviceTable from "./components/device-table";  // Assuming you have created this
-
+import DeviceForm from "./components/device-form";  
+import * as API_DEVICES from "./api/device-api";   
+import DeviceTable from "./components/device-table";  
 class DeviceContainer extends React.Component {
 
     constructor(props) {

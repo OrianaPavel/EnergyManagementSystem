@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.Filters;
 using DeviceService.Data;
+using DeviceService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 /* LOGGER SERILOG*/
@@ -20,6 +21,12 @@ builder.Host.UseSerilog();
 // Add services to the container.
 /* HASHIDS*/
 builder.Services.AddSingleton<IHashids>(_ => new Hashids(builder.Configuration.GetSection("Hashids:Salt").Value!, 11));
+
+//services.AddSingleton<RabbitMQProducer>();
+
+var rabbitMQConnection = builder.Configuration.GetSection("RabbitMQ:Connection").Value;
+builder.Services.AddSingleton(new RabbitMQProducer(rabbitMQConnection));
+
 /* =================================================== */
 // Add services to the container.
 /* DataBase Context Dependency Injection */

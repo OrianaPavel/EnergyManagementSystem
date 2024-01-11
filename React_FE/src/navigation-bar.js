@@ -32,20 +32,25 @@ const NavigationBar = () => (
         <Navbar color="dark" light expand="md">
             <NavbarBrand href="/">
                 <img src={logo} width={"50"}
-                     height={"35"} />
+                    height={"35"} />
             </NavbarBrand>
             <Nav className="mr-auto" navbar>
 
                 <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle style={textStyle} nav caret>
-                       Menu
+                        Menu
                     </DropdownToggle>
                     <DropdownMenu right >
-                        
-                        <DropdownItem>
-                            <NavLink href="/"  onClick={handleLogOut}>LogOut</NavLink>
-                        </DropdownItem>
 
+                        <DropdownItem>
+                            <NavLink href="/" onClick={handleLogOut}>LogOut</NavLink>
+
+                        </DropdownItem>
+                        <DropdownItem>
+                            {localStorage.getItem('isLoggedIn') && (
+                                <NavLink href="/chat">Chat</NavLink>
+                            )}
+                        </DropdownItem>
 
                     </DropdownMenu>
                 </UncontrolledDropdown>
