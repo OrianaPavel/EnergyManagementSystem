@@ -24,7 +24,7 @@ services:
       - Jwt__Token=AcrViINqhjkdEM4zOO8f04KdUBEOAzjJ61VfPajoFdDz3WvEctJg
       - Hashids__Salt=kleWoYZ6Z8
       - Serilog:WriteTo:0:Args:path=/logs/log.txt
-      - RabbitMQ__Connection=amqps://ejjgjahg:HFXjx2E2jq79wTZau8rOQO41sw1EiYeq@crow.rmq.cloudamqp.com/ejjgjahg
+      - RabbitMQ__Connection=amqps://
 
   db3:
     image: mysql:8.0
